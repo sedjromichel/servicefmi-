@@ -29,11 +29,11 @@ body {
 
 /* TITRE */
 .hero h1 {
-  font-size: 30px;
+  font-size: 28px;
   max-width: 300px;
 }
 
-/* CARD LOGIN */
+/* CARD */
 .card {
   background: white;
   color: black;
@@ -59,6 +59,12 @@ button {
   border: none;
   border-radius: 20px;
 }
+
+/* DASHBOARD */
+#dashboard {
+  display: none;
+  padding: 20px;
+}
 </style>
 </head>
 
@@ -66,20 +72,138 @@ button {
 
 <div class="header">SERVICE FMI</div>
 
-<div class="hero">
+<div class="hero" id="loginPage">
 
 <h1>UNE PLATEFORME RAPIDE, SÛRE & SIMPLE</h1>
 
 <div class="card">
-  <h3>Accédez à votre compte</h3>
+  <h3>Connexion</h3>
 
-  <input type="email" placeholder="Email">
-  <input type="password" placeholder="Mot de passe">
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Mot de passe">
 
-  <button>SE CONNECTER</button>
+  <button onclick="login()">Se connecter</button>
+  <button onclick="register()">Créer compte</button>
 </div>
 
 </div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <h2>Bienvenue 👋</h2>
+  <p>Solde : <span id="solde">0</span> €</p>
+
+  <input type="number" id="montant" placeholder="Montant">
+
+  <button onclick="ajouter()">Ajouter</button>
+  <button onclick="retirer()">Retirer</button>
+  <button onclick="logout()">Déconnexion</button>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+// CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyBIfjF0ERcEZjr54rlf8dafGuTMPZuR34U",
+  authDomain: "service-fmi.firebaseapp.com",
+  databaseURL: "https://service-fmi-default-rtdb.firebaseio.com",
+  projectId: "service-fmi",
+  storageBucket: "service-fmi.firebasestorage.app",
+  messagingSenderId: "295191253945",
+  appId: "1:295191253945:web:c670229a7652a5a0461c68"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.database();
+
+// REGISTER
+function register(){
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => alert("Compte créé ✅"))
+    .catch(e => alert(e.message));
+}
+
+// LOGIN
+function login(){
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .catch(e => alert(e.message));
+}
+
+// LOGOUT
+function logout(){
+  auth.signOut();
+}
+
+// AUTO LOGIN
+auth.onAuthStateChanged(user => {
+  if(user){
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    loadSolde();
+  } else {
+    document.getElementById("loginPage").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
+  }
+});
+
+// LOAD SOLDE
+function loadSolde(){
+  const user = auth.currentUser;
+
+  db.ref("users/" + user.uid).on("value", snap => {
+    if(snap.exists()){
+      document.getElementById("solde").innerText = snap.val().solde || 0;
+    }
+  });
+}
+
+// AJOUTER
+function ajouter(){
+  const montant = parseInt(document.getElementById("montant").value);
+  const user = auth.currentUser;
+
+  if(isNaN(montant)) return;
+
+  const ref = db.ref("users/" + user.uid);
+
+  ref.once("value").then(snap => {
+    let actuel = snap.val()?.solde || 0;
+    ref.update({ solde: actuel + montant });
+  });
+}
+
+// RETIRER
+function retirer(){
+  const montant = parseInt(document.getElementById("montant").value);
+  const user = auth.currentUser;
+
+  if(isNaN(montant)) return;
+
+  const ref = db.ref("users/" + user.uid);
+
+  ref.once("value").then(snap => {
+    let actuel = snap.val()?.solde || 0;
+
+    if(actuel >= montant){
+      ref.update({ solde: actuel - montant });
+    } else {
+      alert("Solde insuffisant ❌");
+    }
+  });
+}
+</script>
 
 </body>
 </html>
