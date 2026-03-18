@@ -1,183 +1,3 @@
-
-<!-- LOGIN -->
-<div class="login-box" id="login">
-  <h2>Connexion 🔐</h2>
-  <input type="text" id="user" placeholder="Identifiant">
-  <input type="password" id="pass" placeholder="Mot de passe">
-  <button onclick="login()">Se connecter</button>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard">
-  <h2>Bienvenue 👋</h2>
-
-  <div class="banque">
-    <strong>BCI Nouvelle-Calédonie</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>BNC Nouvelle-Calédonie</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>Société Générale NC</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>Bebunk NC</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>BNP Paribas NC</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>OPT Nouvelle-Calédonie</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-</div>
-
-<script>
-function login() {
-  var user = document.getElementById("user").value;
-  var pass = document.getElementById("pass").value;
-
-  if(user === "admin" && pass === "1234") {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-  } else {
-    alert("Identifiants incorrects ❌");
-  }
-}
-</script>
-
-</body>
-</html>
-    <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Espace Client</title>
-
-<style>
-body {
-  font-family: Arial;
-  background: #f2f2f2;
-  text-align: center;
-}
-
-/* LOGIN */
-.login-box {
-  background: white;
-  padding: 20px;
-  width: 300px;
-  margin: 100px auto;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-input {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-button {
-  background: green;
-  color: white;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  cursor: pointer;
-}
-
-/* DASHBOARD */
-#dashboard {
-  display: none;
-  padding: 20px;
-}
-
-.banque {
-  background: white;
-  padding: 15px;
-  margin: 10px auto;
-  width: 90%;
-  max-width: 500px;
-  border-radius: 10px;
-  text-align: left;
-}
-</style>
-
-</head>
-
-<body>
-
-<!-- LOGIN -->
-<div class="login-box" id="login">
-  <h2>Connexion 🔐</h2>
-  <input type="text" id="user" placeholder="Identifiant">
-  <input type="password" id="pass" placeholder="Mot de passe">
-  <button onclick="login()">Se connecter</button>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard">
-  <h2>Bienvenue 👋</h2>
-
-  <div class="banque">
-    <strong>BCI Nouvelle-Calédonie</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>BNC Nouvelle-Calédonie</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>Société Générale NC</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>Bebunk NC</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>BNP Paribas NC</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-  <div class="banque">
-    <strong>OPT Nouvelle-Calédonie</strong>
-    <p>Compte courant : 1 000 000 € (fictif)</p>
-  </div>
-
-</div>
-
-<script>
-function login() {
-  var user = document.getElementById("user").value;
-  var pass = document.getElementById("pass").value;
-
-  if(user === "admin" && pass === "1234") {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-  } else {
-    alert("Identifiants incorrects ❌");
-  }
-}
-</script>
-
-</body>
-</html>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -236,6 +56,7 @@ button {
   border: none;
   padding: 10px;
   width: 100%;
+  cursor: pointer;
 }
 
 /* CARTE */
@@ -245,6 +66,12 @@ button {
   padding: 20px;
   border-radius: 15px;
   margin: 20px 0;
+  transition: transform 0.3s;
+}
+
+/* Animation carte au survol */
+.card:hover {
+  transform: scale(1.05) rotate(1deg);
 }
 
 /* BANQUES */
@@ -255,11 +82,16 @@ button {
   border-radius: 10px;
   display: flex;
   align-items: center;
+  transition: background 0.3s;
 }
 
 .banque img {
   width: 50px;
   margin-right: 15px;
+}
+
+.banque:hover {
+  background: #e0ffe0;
 }
 
 /* PROJETS */
@@ -268,6 +100,12 @@ button {
   padding: 15px;
   margin: 10px 0;
   border-radius: 10px;
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.6; }
 }
 </style>
 
@@ -298,7 +136,7 @@ button {
   <div class="card">
     Carte Premium<br>
     **** **** **** 1234<br>
-    Solde : 1 000 000 €
+    Solde : <span id="balance">0</span> €
   </div>
 
   <div class="banque">
@@ -359,8 +197,14 @@ button {
 function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(page).classList.add('active');
+
+  // Animation solde quand on ouvre dashboard
+  if(page === 'dashboard') {
+    animateBalance(0, 1000000, 2000);
+  }
 }
 
+// Login
 function login() {
   let user = document.getElementById("user").value;
   let pass = document.getElementById("pass").value;
@@ -370,6 +214,23 @@ function login() {
   } else {
     alert("Erreur ❌");
   }
+}
+
+// Animation du solde
+function animateBalance(start, end, duration) {
+  let range = end - start;
+  let current = start;
+  let increment = end > start ? 10000 : -10000;
+  let stepTime = Math.abs(Math.floor(duration / (range / increment)));
+  let obj = document.getElementById("balance");
+  let timer = setInterval(function() {
+    current += increment;
+    if((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+      current = end;
+      clearInterval(timer);
+    }
+    obj.innerText = current.toLocaleString();
+  }, stepTime);
 }
 </script>
 
