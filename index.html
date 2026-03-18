@@ -3,108 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <title>Service FMI</title>
-
 <style>
-body {
-  font-family: Arial;
-  margin: 0;
-  background: #f2f2f2;
-}
-
-/* MENU */
-.nav {
-  background: green;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.nav span {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-/* PAGES */
-.page {
-  display: none;
-  padding: 20px;
-}
-
-.active {
-  display: block;
-}
-
-/* LOGIN */
-.login-box {
-  background: white;
-  padding: 20px;
-  width: 300px;
-  margin: 80px auto;
-  border-radius: 10px;
-}
-
-input, textarea {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-button {
-  background: green;
-  color: white;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-/* CARTE */
-.card {
-  background: linear-gradient(45deg, green, black);
-  color: white;
-  padding: 20px;
-  border-radius: 15px;
-  margin: 20px 0;
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: scale(1.05) rotate(1deg);
-}
-
-/* BANQUES */
-.banque {
-  background: white;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  transition: background 0.3s;
-}
-
-.banque img {
-  width: 50px;
-  margin-right: 15px;
-}
-
-.banque:hover {
-  background: #e0ffe0;
-}
-
-/* FORMULAIRE CONTACT */
-form {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 400px;
-  margin: 20px auto;
-}
+body { font-family: Arial; margin:0; background:#f2f2f2; }
+.nav { background: green; color:white; padding:15px; text-align:center; font-weight:bold; }
+.nav span { margin:0 10px; cursor:pointer; }
+.page { display:none; padding:20px; }
+.active { display:block; }
+.login-box { background:white; padding:20px; width:300px; margin:80px auto; border-radius:10px; }
+input, textarea { width:90%; padding:10px; margin:10px 0; }
+button { background:green; color:white; border:none; padding:10px; width:100%; cursor:pointer; border-radius:5px; }
+.banque { background:white; padding:15px; margin:10px 0; border-radius:10px; display:flex; align-items:center; transition:background 0.3s; }
+.banque img { width:50px; margin-right:15px; }
+.banque:hover { background:#e0ffe0; }
+form { background:white; padding:20px; border-radius:10px; max-width:400px; margin:20px auto; }
 </style>
 </head>
-
 <body>
 
 <div class="nav">
@@ -125,43 +38,36 @@ form {
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="page">
-  <h2>💳 Mes comptes</h2>
+  <h2>💳 Mes Banques</h2>
 
-  <div class="card">
-    Carte Premium<br>
-    **** **** **** 1234<br>
-    Solde : <span id="balance">0</span> €
-  </div>
-
-  <!-- BANQUES en ordre -->
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/BCI_Logo.png" alt="BCI"/>
-    BCI Nouvelle-Calédonie – Solde disponible : 1 000 000 €
+    BCI Nouvelle-Calédonie – Compte actif, solde disponible
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/BNC_New_Caledonia_logo.png" alt="BNC"/>
-    BNC Nouvelle-Calédonie – Compte actif : 1 000 000 €
+    BNC Nouvelle-Calédonie – Compte actif, solde disponible
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Societe_Generale_logo.svg" alt="Société Générale"/>
-    Société Générale NC – Solde disponible : 1 000 000 €
+    Société Générale NC – Compte actif, solde disponible
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Bebunk_logo.png" alt="Bebunk"/>
-    Bebunk NC – Compte actif : 1 000 000 €
+    Bebunk NC – Compte actif, solde disponible
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/BNP_Paribas_logo.svg" alt="BNP Paribas"/>
-    BNP Paribas NC – Solde disponible : 1 000 000 €
+    BNP Paribas NC – Compte actif, solde disponible
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/OPT_New_Caledonia_logo.png" alt="OPT"/>
-    OPT NC – Compte actif : 1 000 000 €
+    OPT NC – Compte actif, solde disponible
   </div>
 </div>
 
@@ -180,39 +86,17 @@ form {
 function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(page).classList.add('active');
-
-  if(page === 'dashboard') {
-    animateBalance(0, 1000000, 2000);
-  }
 }
 
-// Login : un seul compte
+// Login unique
 function login() {
   let user = document.getElementById("user").value;
   let pass = document.getElementById("pass").value;
-
   if(user === "admin" && pass === "1234") {
     showPage('dashboard');
   } else {
-    alert("Erreur ❌");
+    alert("Erreur ❌ Identifiant ou mot de passe incorrect");
   }
-}
-
-// Animation du solde
-function animateBalance(start, end, duration) {
-  let range = end - start;
-  let current = start;
-  let increment = end > start ? 10000 : -10000;
-  let stepTime = Math.abs(Math.floor(duration / (range / increment)));
-  let obj = document.getElementById("balance");
-  let timer = setInterval(function() {
-    current += increment;
-    if((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-      current = end;
-      clearInterval(timer);
-    }
-    obj.innerText = current.toLocaleString();
-  }, stepTime);
 }
 </script>
 
