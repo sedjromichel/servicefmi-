@@ -4,25 +4,24 @@
 <meta charset="UTF-8">
 <title>Service FMI</title>
 <style>
-body { font-family: Arial; background:#f2f2f2; margin:0; }
+body { font-family: Arial; background:#f2f2f2; margin:0; padding:0; }
 .nav { background:green; color:white; padding:15px; text-align:center; font-weight:bold; }
 .nav span { margin:0 10px; cursor:pointer; }
 .page { display:none; padding:20px; }
 .active { display:block; }
 .login-box { background:white; padding:20px; width:300px; margin:80px auto; border-radius:10px; }
-input, textarea { width:90%; padding:10px; margin:10px 0; }
+input { width:90%; padding:10px; margin:10px 0; }
 button { background:green; color:white; border:none; padding:10px; width:100%; cursor:pointer; border-radius:5px; }
-.banque { background:white; padding:15px; margin:10px 0; border-radius:10px; display:flex; align-items:center; }
+.banque { background:white; padding:15px; margin:10px auto; border-radius:10px; display:flex; align-items:center; max-width:500px; box-shadow:0 0 5px rgba(0,0,0,0.1); justify-content:space-between; }
 .banque img { width:50px; margin-right:15px; }
-form { background:white; padding:20px; border-radius:10px; max-width:400px; margin:20px auto; }
+.banque span { font-weight:bold; color:#333; }
+h2 { text-align:center; color:green; }
 </style>
 </head>
 <body>
 
 <div class="nav">
   <span onclick="showPage('login')">Connexion</span>
-  <span onclick="showPage('dashboard')">Comptes</span>
-  <span onclick="showPage('contact')">Contact</span>
 </div>
 
 <!-- LOGIN -->
@@ -37,57 +36,46 @@ form { background:white; padding:20px; border-radius:10px; max-width:400px; marg
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="page">
-  <h2>💳 Mes Banques</h2>
+  <h2>💳 SERVICE FMI – Mes Banques</h2>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/BCI_Logo.png" alt="BCI"/>
-    BCI Nouvelle-Calédonie – Compte actif, solde disponible
+    <span>BCI Nouvelle-Calédonie</span>
+    <span>Solde : 1 000 000 €</span>
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/BNC_New_Caledonia_logo.png" alt="BNC"/>
-    BNC Nouvelle-Calédonie – Compte actif, solde disponible
+    <span>BNC Nouvelle-Calédonie</span>
+    <span>Solde : 1 000 000 €</span>
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Societe_Generale_logo.svg" alt="Société Générale"/>
-    Société Générale NC – Compte actif, solde disponible
+    <span>Société Générale NC</span>
+    <span>Solde : 1 000 000 €</span>
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Bebunk_logo.png" alt="Bebunk"/>
-    Bebunk NC – Compte actif, solde disponible
+    <span>Bebunk NC</span>
+    <span>Solde : 1 000 000 €</span>
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/BNP_Paribas_logo.svg" alt="BNP Paribas"/>
-    BNP Paribas NC – Compte actif, solde disponible
+    <span>BNP Paribas NC</span>
+    <span>Solde : 1 000 000 €</span>
   </div>
 
   <div class="banque">
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/OPT_New_Caledonia_logo.png" alt="OPT"/>
-    OPT NC – Compte actif, solde disponible
+    <span>OPT NC</span>
+    <span>Solde : 1 000 000 €</span>
   </div>
 </div>
 
-<!-- CONTACT -->
-<div id="contact" class="page">
-  <h2>📩 Contactez-nous</h2>
-  <form id="contact-form">
-    <input type="text" name="from_name" placeholder="Votre nom" required>
-    <input type="email" name="from_email" placeholder="Votre email" required>
-    <textarea name="message" placeholder="Votre message" required></textarea>
-    <button type="submit">Envoyer</button>
-  </form>
-  <p id="status"></p>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-(function(){
-  emailjs.init("YOUR_USER_ID"); // Remplace par ton User ID EmailJS
-})();
-
 function showPage(page){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(page).classList.add('active');
@@ -99,23 +87,10 @@ function login(){
   let pass = document.getElementById("pass").value;
   if(user==="admin" && pass==="1234"){
     showPage('dashboard');
-  }else{
+  } else{
     alert("Erreur ❌ Identifiant ou mot de passe incorrect");
   }
 }
-
-// Formulaire EmailJS
-document.getElementById("contact-form").addEventListener("submit", function(event){
-  event.preventDefault();
-  emailjs.sendForm("service_hkg5qe8", "template_s48uk0o", this)
-  .then(function(){
-    document.getElementById("status").innerText = "Message envoyé ✅";
-    document.getElementById("contact-form").reset();
-  }, function(error){
-    document.getElementById("status").innerText = "Erreur ❌, réessayez";
-    console.log(error);
-  });
-});
 </script>
 
 </body>
