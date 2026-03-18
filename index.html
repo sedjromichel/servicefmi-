@@ -1,12 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SERVICE FMI</title>
+
+<style>
+body { font-family: Arial; background:#f2f4f7; margin:0; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(90deg,#0f766e,#134e4a);
+  color:white;
+  text-align:center;
+  padding:15px;
+}
+
+.header h1 { margin:0; }
+
+/* LOGIN */
+.login-box {
+  background:white;
+  padding:20px;
+  max-width:350px;
+  margin:60px auto;
+  border-radius:15px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+input {
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+button {
+  width:100%;
+  padding:12px;
+  background:#0f766e;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+/* DASHBOARD */
+.page { display:none; }
+.active { display:block; }
+
+.banque {
+  background:white;
+  margin:10px;
+  padding:15px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>SERVICE FMI</h1>
+</div>
+
+<!-- LOGIN -->
+<div id="login" class="page active">
+  <div class="login-box">
+    <h2>Connexion</h2>
+
+    <input id="user" placeholder="Email">
+    <input id="pass" type="password" placeholder="Mot de passe">
+
+    <button onclick="login()">Se connecter</button>
+    <button onclick="register()">Créer un compte</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="page">
+  <h2 style="text-align:center;">Mes comptes</h2>
+
+  <button onclick="addAccount()">➕ Ajouter compte</button>
+
+  <div id="accounts"></div>
+</div>
+
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
+// CONFIG FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyBIfjF0ERcEZjr54rlf8dafGuTMPZuR34U",
   authDomain: "service-fmi.firebaseapp.com",
-  databaseURL: "https://service-fmi-default-rtdb.firebaseio.com",
   projectId: "service-fmi",
   storageBucket: "service-fmi.firebasestorage.app",
   messagingSenderId: "295191253945",
@@ -15,63 +107,4 @@ const firebaseConfig = {
 
 // INIT
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// LOGIN
-function login(){
-  let email = document.getElementById("user").value;
-  let pass = document.getElementById("pass").value;
-
-  auth.signInWithEmailAndPassword(email, pass)
-    .then(() => {
-      alert("Connexion réussie ✅");
-      showPage('dashboard');
-      loadAccounts();
-    })
-    .catch(err => alert(err.message));
-}
-
-// REGISTER
-function register(){
-  let email = document.getElementById("user").value;
-  let pass = document.getElementById("pass").value;
-
-  auth.createUserWithEmailAndPassword(email, pass)
-    .then(() => alert("Compte créé ✅"))
-    .catch(err => alert(err.message));
-}
-
-// AJOUT COMPTE
-function addAccount(){
-  let name = prompt("Nom de la banque");
-  let solde = prompt("Solde");
-
-  db.collection("accounts").add({
-    name: name,
-    solde: solde
-  }).then(() => {
-    loadAccounts();
-  });
-}
-
-// CHARGER COMPTES
-function loadAccounts(){
-  let container = document.getElementById("accounts");
-  container.innerHTML = "";
-
-  db.collection("accounts").get().then(snapshot => {
-    snapshot.forEach(doc => {
-      let data = doc.data();
-
-      container.innerHTML += `
-        <div class="banque">
-          <span>${data.name}</span>
-          <span>${data.solde} €</span>
-        </div>
-      `;
-    });
-  });
-}
-</script>
-  
+const auth = firebase
