@@ -4,17 +4,16 @@
 <meta charset="UTF-8">
 <title>Service FMI</title>
 <style>
-body { font-family: Arial; margin:0; background:#f2f2f2; }
-.nav { background: green; color:white; padding:15px; text-align:center; font-weight:bold; }
+body { font-family: Arial; background:#f2f2f2; margin:0; }
+.nav { background:green; color:white; padding:15px; text-align:center; font-weight:bold; }
 .nav span { margin:0 10px; cursor:pointer; }
 .page { display:none; padding:20px; }
 .active { display:block; }
 .login-box { background:white; padding:20px; width:300px; margin:80px auto; border-radius:10px; }
 input, textarea { width:90%; padding:10px; margin:10px 0; }
 button { background:green; color:white; border:none; padding:10px; width:100%; cursor:pointer; border-radius:5px; }
-.banque { background:white; padding:15px; margin:10px 0; border-radius:10px; display:flex; align-items:center; transition:background 0.3s; }
+.banque { background:white; padding:15px; margin:10px 0; border-radius:10px; display:flex; align-items:center; }
 .banque img { width:50px; margin-right:15px; }
-.banque:hover { background:#e0ffe0; }
 form { background:white; padding:20px; border-radius:10px; max-width:400px; margin:20px auto; }
 </style>
 </head>
@@ -74,30 +73,49 @@ form { background:white; padding:20px; border-radius:10px; max-width:400px; marg
 <!-- CONTACT -->
 <div id="contact" class="page">
   <h2>📩 Contactez-nous</h2>
-  <form action="https://formspree.io/f/xyknbwgn" method="POST">
-    <input type="text" name="nom" placeholder="Votre nom" required>
-    <input type="email" name="email" placeholder="Votre email" required>
+  <form id="contact-form">
+    <input type="text" name="from_name" placeholder="Votre nom" required>
+    <input type="email" name="from_email" placeholder="Votre email" required>
     <textarea name="message" placeholder="Votre message" required></textarea>
     <button type="submit">Envoyer</button>
   </form>
+  <p id="status"></p>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-function showPage(page) {
+(function(){
+  emailjs.init("YOUR_USER_ID"); // Remplace par ton User ID EmailJS
+})();
+
+function showPage(page){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(page).classList.add('active');
 }
 
-// Login unique
-function login() {
+// Login simple
+function login(){
   let user = document.getElementById("user").value;
   let pass = document.getElementById("pass").value;
-  if(user === "admin" && pass === "1234") {
+  if(user==="admin" && pass==="1234"){
     showPage('dashboard');
-  } else {
+  }else{
     alert("Erreur ❌ Identifiant ou mot de passe incorrect");
   }
 }
+
+// Formulaire EmailJS
+document.getElementById("contact-form").addEventListener("submit", function(event){
+  event.preventDefault();
+  emailjs.sendForm("service_hkg5qe8", "template_s48uk0o", this)
+  .then(function(){
+    document.getElementById("status").innerText = "Message envoyé ✅";
+    document.getElementById("contact-form").reset();
+  }, function(error){
+    document.getElementById("status").innerText = "Erreur ❌, réessayez";
+    console.log(error);
+  });
+});
 </script>
 
 </body>
