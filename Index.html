@@ -52,3 +52,122 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Espace Client</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f2f2f2;
+  text-align: center;
+}
+
+/* LOGIN */
+.login-box {
+  background: white;
+  padding: 20px;
+  width: 300px;
+  margin: 100px auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+button {
+  background: green;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* DASHBOARD */
+#dashboard {
+  display: none;
+  padding: 20px;
+}
+
+.banque {
+  background: white;
+  padding: 15px;
+  margin: 10px auto;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 10px;
+  text-align: left;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="login-box" id="login">
+  <h2>Connexion 🔐</h2>
+  <input type="text" id="user" placeholder="Identifiant">
+  <input type="password" id="pass" placeholder="Mot de passe">
+  <button onclick="login()">Se connecter</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <h2>Bienvenue 👋</h2>
+
+  <div class="banque">
+    <strong>BCI Nouvelle-Calédonie</strong>
+    <p>Compte courant : 1 000 000 € (fictif)</p>
+  </div>
+
+  <div class="banque">
+    <strong>BNC Nouvelle-Calédonie</strong>
+    <p>Compte courant : 1 000 000 € (fictif)</p>
+  </div>
+
+  <div class="banque">
+    <strong>Société Générale NC</strong>
+    <p>Compte courant : 1 000 000 € (fictif)</p>
+  </div>
+
+  <div class="banque">
+    <strong>Bebunk NC</strong>
+    <p>Compte courant : 1 000 000 € (fictif)</p>
+  </div>
+
+  <div class="banque">
+    <strong>BNP Paribas NC</strong>
+    <p>Compte courant : 1 000 000 € (fictif)</p>
+  </div>
+
+  <div class="banque">
+    <strong>OPT Nouvelle-Calédonie</strong>
+    <p>Compte courant : 1 000 000 € (fictif)</p>
+  </div>
+
+</div>
+
+<script>
+function login() {
+  var user = document.getElementById("user").value;
+  var pass = document.getElementById("pass").value;
+
+  if(user === "admin" && pass === "1234") {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+  } else {
+    alert("Identifiants incorrects ❌");
+  }
+}
+</script>
+
+</body>
+</html>
