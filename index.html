@@ -136,6 +136,99 @@ function ajouterSolde() {
   });
 }
 </script>
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
+<script>
+// CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyBIfjF0ERcEZjr54rlf8dafGuTMPZuR34U",
+  authDomain: "service-fmi.firebaseapp.com",
+  projectId: "service-fmi",
+  storageBucket: "service-fmi.firebasestorage.app",
+  messagingSenderId: "295191253945",
+  appId: "1:295191253945:web:c670229a7652a5a0461c68"
+};
+
+// INIT
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// NAVIGATION
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+}
+
+// REGISTER
+function register(){
+  let email = document.getElementById("user").value;
+  let pass = document.getElementById("pass").value;
+
+  auth.createUserWithEmailAndPassword(email, pass)
+    .then(() => alert("Compte créé ✅"))
+    .catch(err => alert(err.message));
+}
+
+// LOGIN
+function login(){
+  let email = document.getElementById("user").value;
+  let pass = document.getElementById("pass").value;
+
+  auth.signInWithEmailAndPassword(email, pass)
+    .catch(err => alert(err.message));
+}
+
+// AUTO LOGIN
+auth.onAuthStateChanged(user => {
+  if(user){
+    showPage('dashboard');
+    loadAccounts();
+  } else {
+    showPage('login');
+  }
+});
+
+// AJOUT COMPTE
+function addAccount(){
+  let user = auth.currentUser;
+  if(!user) return;
+
+  let name = prompt("Nom du compte");
+  let solde = prompt("Solde");
+
+  db.collection("accounts").add({
+    uid: user.uid,
+    name: name,
+    solde: Number(solde)
+  }).then(() => loadAccounts());
+}
+
+// LOAD
+function loadAccounts(){
+  let user = auth.currentUser;
+  let container = document.getElementById("accounts");
+  container.innerHTML = "";
+
+  db.collection("accounts")
+    .where("uid", "==", user.uid)
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        let data = doc.data();
+
+        container.innerHTML += `
+          <div class="banque">
+            <span>${data.name}</span>
+            <span>${data.solde} €</span>
+          </div>
+        `;
+      });
+    });
+}
+</script>
 </body>
 </html>
