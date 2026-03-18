@@ -1,159 +1,76 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SERVICE FMI</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background:#f2f4f7;
-    margin:0;
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBIfjF0ERcEZjr54rlf8dafGuTMPZuR34U",
+  authDomain: "service-fmi.firebaseapp.com",
+  databaseURL: "https://service-fmi-default-rtdb.firebaseio.com",
+  projectId: "service-fmi",
+  storageBucket: "service-fmi.firebasestorage.app",
+  messagingSenderId: "295191253945",
+  appId: "1:295191253945:web:c670229a7652a5a0461c68"
+};
+
+// INIT
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// LOGIN
+function login(){
+  let email = document.getElementById("user").value;
+  let pass = document.getElementById("pass").value;
+
+  auth.signInWithEmailAndPassword(email, pass)
+    .then(() => {
+      alert("Connexion réussie ✅");
+      showPage('dashboard');
+      loadAccounts();
+    })
+    .catch(err => alert(err.message));
 }
 
-/* HEADER */
-.header {
-    background: linear-gradient(90deg, #0f766e, #134e4a);
-    color:white;
-    text-align:center;
-    padding:15px;
+// REGISTER
+function register(){
+  let email = document.getElementById("user").value;
+  let pass = document.getElementById("pass").value;
+
+  auth.createUserWithEmailAndPassword(email, pass)
+    .then(() => alert("Compte créé ✅"))
+    .catch(err => alert(err.message));
 }
 
-.header img {
-    width:50px;
-    display:block;
-    margin:0 auto 5px;
+// AJOUT COMPTE
+function addAccount(){
+  let name = prompt("Nom de la banque");
+  let solde = prompt("Solde");
+
+  db.collection("accounts").add({
+    name: name,
+    solde: solde
+  }).then(() => {
+    loadAccounts();
+  });
 }
 
-.header h1 {
-    margin:0;
-    font-size:20px;
+// CHARGER COMPTES
+function loadAccounts(){
+  let container = document.getElementById("accounts");
+  container.innerHTML = "";
+
+  db.collection("accounts").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      let data = doc.data();
+
+      container.innerHTML += `
+        <div class="banque">
+          <span>${data.name}</span>
+          <span>${data.solde} €</span>
+        </div>
+      `;
+    });
+  });
 }
-
-.header span {
-    font-size:13px;
-    color:#a7f3d0;
-}
-
-/* NAV */
-.nav {
-    background:#065f46;
-    color:white;
-    text-align:center;
-    padding:10px;
-}
-
-.nav span {
-    cursor:pointer;
-}
-
-/* PAGES */
-.page { display:none; padding:20px; }
-.active { display:block; }
-
-/* LOGIN */
-.login-box {
-    background:white;
-    padding:20px;
-    max-width:350px;
-    margin:60px auto;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-input {
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-    border-radius:10px;
-    border:1px solid #ccc;
-}
-
-button {
-    width:100%;
-    padding:12px;
-    background:#0f766e;
-    color:white;
-    border:none;
-    border-radius:10px;
-    font-size:15px;
-    cursor:pointer;
-}
-
-button:hover {
-    background:#0b5f58;
-}
-
-/* DASHBOARD */
-h2 {
-    text-align:center;
-    color:#065f46;
-}
-
-.banque {
-    background:white;
-    padding:15px;
-    margin:10px auto;
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    max-width:500px;
-    justify-content:space-between;
-    box-shadow:0 3px 8px rgba(0,0,0,0.1);
-}
-
-.banque-left {
-    display:flex;
-    align-items:center;
-}
-
-.banque img {
-    width:45px;
-    margin-right:10px;
-}
-
-.secure {
-    text-align:center;
-    color:green;
-    margin-top:10px;
-}
-</style>
-</head>
-
-<body>
-
-<!-- HEADER FMI -->
-<div class="header">
-  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="FMI Logo">
-  <h1>SERVICE FMI</h1>
-  <span>Espace sécurisé de gestion</span>
-</div>
-
-<!-- NAV -->
-<div class="nav">
-  <span onclick="showPage('login')">Connexion</span>
-</div>
-
-<!-- LOGIN -->
-<div id="login" class="page active">
-  <div class="login-box">
-    <h2>🔐 Connexion sécurisée</h2>
-
-    <input id="user" placeholder="Identifiant">
-    <input id="pass" type="password" placeholder="Mot de passe">
-
-    <button onclick="login()">Se connecter</button>
-
-    <div class="secure">🔒 Connexion sécurisée SSL</div>
-  </div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard" class="page">
-  <h2>💳 SERVICE FMI – Gestion des comptes</h2>
-
-  <div class="banque">
-    <div class="banque-left">
-      <img src="https://
- 
+</script>
