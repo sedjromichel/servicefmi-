@@ -44,7 +44,7 @@ body {
   border-radius: 10px;
 }
 
-input {
+input, textarea {
   width: 90%;
   padding: 10px;
   margin: 10px 0;
@@ -57,6 +57,7 @@ button {
   padding: 10px;
   width: 100%;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 /* CARTE */
@@ -69,7 +70,6 @@ button {
   transition: transform 0.3s;
 }
 
-/* Animation carte au survol */
 .card:hover {
   transform: scale(1.05) rotate(1deg);
 }
@@ -94,21 +94,15 @@ button {
   background: #e0ffe0;
 }
 
-/* PROJETS */
-.projet {
+/* FORMULAIRE CONTACT */
+form {
   background: white;
-  padding: 15px;
-  margin: 10px 0;
+  padding: 20px;
   border-radius: 10px;
-  animation: blink 2s infinite;
-}
-
-@keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0.6; }
+  max-width: 400px;
+  margin: 20px auto;
 }
 </style>
-
 </head>
 
 <body>
@@ -116,7 +110,7 @@ button {
 <div class="nav">
   <span onclick="showPage('login')">Connexion</span>
   <span onclick="showPage('dashboard')">Comptes</span>
-  <span onclick="showPage('gains')">Gains</span>
+  <span onclick="showPage('contact')">Contact</span>
 </div>
 
 <!-- LOGIN -->
@@ -139,58 +133,47 @@ button {
     Solde : <span id="balance">0</span> €
   </div>
 
+  <!-- BANQUES en ordre -->
   <div class="banque">
-    <img src="https://img.icons8.com/color/48/bank.png"/>
-    BCI Nouvelle-Calédonie – 1 000 000 €
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/BCI_Logo.png" alt="BCI"/>
+    BCI Nouvelle-Calédonie – Solde disponible : 1 000 000 €
   </div>
 
   <div class="banque">
-    <img src="https://img.icons8.com/color/48/bank.png"/>
-    BNC Nouvelle-Calédonie – 1 000 000 €
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/BNC_New_Caledonia_logo.png" alt="BNC"/>
+    BNC Nouvelle-Calédonie – Compte actif : 1 000 000 €
   </div>
 
   <div class="banque">
-    <img src="https://img.icons8.com/color/48/bank.png"/>
-    Société Générale NC – 1 000 000 €
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Societe_Generale_logo.svg" alt="Société Générale"/>
+    Société Générale NC – Solde disponible : 1 000 000 €
   </div>
 
   <div class="banque">
-    <img src="https://img.icons8.com/color/48/bank.png"/>
-    Bebunk NC – 1 000 000 €
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Bebunk_logo.png" alt="Bebunk"/>
+    Bebunk NC – Compte actif : 1 000 000 €
   </div>
 
   <div class="banque">
-    <img src="https://img.icons8.com/color/48/bank.png"/>
-    BNP Paribas NC – 1 000 000 €
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/BNP_Paribas_logo.svg" alt="BNP Paribas"/>
+    BNP Paribas NC – Solde disponible : 1 000 000 €
   </div>
 
   <div class="banque">
-    <img src="https://img.icons8.com/color/48/post-office.png"/>
-    OPT NC – 1 000 000 €
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/OPT_New_Caledonia_logo.png" alt="OPT"/>
+    OPT NC – Compte actif : 1 000 000 €
   </div>
 </div>
 
-<!-- GAINS -->
-<div id="gains" class="page">
-  <h2>💰 Projets de gain</h2>
-
-  <div class="projet">
-    EuroMillions 💎<br>
-    Participez et tentez de gagner gros jackpots.<br>
-    <button onclick="alert('Participation enregistrée ✅')">Participer</button>
-  </div>
-
-  <div class="projet">
-    Gains rapides ⚡<br>
-    Stratégies simples pour augmenter vos chances.<br>
-    <button onclick="alert('Inscription validée ✅')">S'inscrire</button>
-  </div>
-
-  <div class="projet">
-    Programme VIP 👑<br>
-    Accès exclusif à des opportunités premium.<br>
-    <button onclick="alert('Accès VIP activé 🔥')">Accéder</button>
-  </div>
+<!-- CONTACT -->
+<div id="contact" class="page">
+  <h2>📩 Contactez-nous</h2>
+  <form action="https://formspree.io/f/xyknbwgn" method="POST">
+    <input type="text" name="nom" placeholder="Votre nom" required>
+    <input type="email" name="email" placeholder="Votre email" required>
+    <textarea name="message" placeholder="Votre message" required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
 </div>
 
 <script>
@@ -198,7 +181,6 @@ function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(page).classList.add('active');
 
-  // Animation solde quand on ouvre dashboard
   if(page === 'dashboard') {
     animateBalance(0, 1000000, 2000);
   }
